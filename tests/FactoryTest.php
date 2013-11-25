@@ -83,12 +83,14 @@ class FactoryTest extends TestCase {
         $blueprint = $factory->makeBlueprint($class);
 
         $this->assertCount(1, $blueprint->getAttributes());
-        $firstAttr = $blueprint->getAttributes()[0];
+        $firstAttr = $blueprint->getAttributes();
+        $firstAttr = $firstAttr[0];
         $this->assertEquals($firstAttr, $attribute);
         $this->assertEquals($firstAttr->getValue(), 'fakeAttr');
 
         $this->assertCount(1, $blueprint->getRelations());
-        $firstRel = $blueprint->getRelations()[0];
+        $firstRel = $blueprint->getRelations();
+        $firstRel = $firstRel[0];
         $this->assertEquals($firstRel, $relation);
         $this->assertEquals($firstRel->getValue(), 'fakeRel');
     }
@@ -216,7 +218,8 @@ class FactoryTest extends TestCase {
         $blueprint = $factory->makeBlueprint($class);
 
         $this->assertCount(1, $blueprint->getAttributes());
-        $firstAttr = $blueprint->getAttributes()[0];
+        $firstAttr = $blueprint->getAttributes();
+        $firstAttr = $firstAttr[0];
         $this->assertEquals($firstAttr, $attribute);
         $this->assertEquals($firstAttr->getValue(), 'overridenValue');
     }
@@ -260,7 +263,8 @@ class FactoryTest extends TestCase {
         $blueprint = $factory->makeBlueprint($class);
 
         $this->assertCount(1, $blueprint->getRelations());
-        $firstRel = $blueprint->getRelations()[0];
+        $firstRel = $blueprint->getRelations();
+        $firstRel = $firstRel[0];
         $this->assertEquals($firstRel, $relation);
         $this->assertEquals($firstRel->getValue(), 'fakeRel');
     }
