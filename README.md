@@ -1,4 +1,4 @@
-# Fakefactory
+# Fakefactory ![Build status](https://api.travis-ci.org/skovachev/fakefactory.png)
 
 This is a Laravel 4 package that makes the process of generating fake data models a breeze. It will enable you to quickly generate data for your tests or just to seed your application's database for UI review.
 
