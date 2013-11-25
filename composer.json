@@ -2,6 +2,7 @@
     "name": "skovachev/fakefactory",
     "description": "A model factory package for Laravel 4 with expressive API for creating custom tailored dummy objects",
     "keywords": ["faker", "fixtures", "factory", "models", "laravel", "seed", "tool"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Stefan Kovachev",
