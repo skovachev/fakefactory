@@ -171,6 +171,14 @@ class UserFaker extends \Skovachev\Fakefactory\Faker
 
 The `$faker` argument is an instance of the `Faker\Generator` object providing all the generation of abilities of the [Faker package](https://github.com/fzaninotto/Faker).
 
+You can also use any of the rules provided by the generator directly from the `attributes` array. If the `Faker\Generator` method you want to use expects arguments just pass them after the method name, separated with '|'. For example to generate 3 paragraphs of text you'll need to use the `paragraphs` method. Your attributes array may look like this:
+
+```php
+protected $attributes = [
+    'text' => 'paragraphs|3'
+];
+```
+
 ## License
 
 Fakefactory is released under the MIT Licence. See the bundled LICENSE file for details.
