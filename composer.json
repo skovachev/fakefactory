@@ -1,6 +1,6 @@
 {
     "name": "skovachev/fakefactory",
-    "description": "A model factory class with expressive API for creating custom tailored dummy objects",
+    "description": "A model factory package for Laravel 4 with expressive API for creating custom tailored dummy objects",
     "keywords": ["faker", "fixtures", "factory", "models", "laravel", "seed", "tool"],
     "authors": [
         {
