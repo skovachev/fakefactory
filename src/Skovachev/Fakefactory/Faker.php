@@ -115,11 +115,15 @@ class Faker {
     {
         $attributes = array();
         foreach ($this->blueprint->getAttributes() as $attribute) {
-            $fakingRule = $this->rules[$attribute->getName()];
+            $fakingRule = array_get($this->rules, $attribute->getName());
 
+            // if no rule exists set NULL
+            if (is_null($fakingRule))
+            {
+                $attributes[$attribute->getName()] = null;
+            }
             // if rules is set to custom -> look for a value generator method in faker class
-            // if ($fakingRule == 'custom')
-            if ($fakingRule->isCustom())
+            else if ($fakingRule->isCustom())
             {
                 $attributeName = $attribute->getName();
                 $methodName = $this->getValueGeneratorMethodName($attributeName);

@@ -117,6 +117,19 @@ class FakerTest extends TestCase {
         $this->assertEquals($attributes, array('foobar' => 'fakedValue'));
     }
 
+    public function testFakeAttributesWithNoRule()
+    {
+        $faker = $this->getFaker();
+
+        $blueprint = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Blueprint');
+
+        $this->setFakerBlueprint($faker, $blueprint, null);
+
+        $attributes = $faker->fakeAttributes();
+
+        $this->assertEquals($attributes, array('foobar' => null));
+    }
+
     public function testFakeAttributesWithCustomRule()
     {
         $faker = $this->getFaker();
