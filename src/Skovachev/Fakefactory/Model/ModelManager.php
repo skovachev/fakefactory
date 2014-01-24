@@ -209,7 +209,10 @@ class ModelManager
             $relationship->save();
         }
 
-        call_user_func_array(array($model, 'load'), $relationshipKeys);
+        if (!empty($relationshipKeys))
+        {
+            call_user_func_array(array($model, 'load'), $relationshipKeys);
+        }
 
         return $model;
     }
