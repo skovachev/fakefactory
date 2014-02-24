@@ -33,6 +33,7 @@ return array(
         'website'       => 'url', 
         'url'           => 'url',
         'ip'            => 'ipv4',
+        'description'   => 'text'
     ),
 
 );
