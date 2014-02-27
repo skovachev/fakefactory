@@ -225,7 +225,7 @@ class Factory
      * @param string $class 
      * @return Skovachev\Fakefactory\Faker
      */
-    public function getClassFaker($class)
+    public function getClassFaker($class, $customRules = array())
     {
         $faker = null;
 
@@ -238,16 +238,26 @@ class Factory
         // else check if a custom binding was registered
         if (is_null($faker) && isset(static::$fakers[$class]) && !is_null(static::$fakers[$class]))
         {
-            return static::$fakers[$class];
+            $faker = static::$fakers[$class];
         }
 
-        // else created default faker
+        // else create default faker
         if (is_null($faker))
         {
             $faker = $this->defaultFakerClass;
         }
 
-        return static::$fakers[$class] = $this->reflector->instantiate($faker, $this->getClass($class));
+        $faker = $this->reflector->instantiate($faker, $this->getClass($class));
+
+        static::$fakers[$class] = $faker;
+
+        // add drop in faking rules
+        if (!empty($customRules))
+        {
+            $faker->mergeFakingRules($customRules);
+        }
+
+        return $faker;
     }
 
     /**

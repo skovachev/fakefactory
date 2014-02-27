@@ -40,6 +40,20 @@ class FactoryTest extends TestCase {
         $this->assertEquals('bar', $faker);
     }
 
+    public function testCustomRulesAddedToFaker()
+    {
+        $factory = $this->getFactory();
+        $class = 'DummyFakerClass';
+        $customRules = array('foo' => 'bar');
+
+        $mockedFaker = Mockery::mock('Skovachev\Fakefactory\Faker');
+        $mockedFaker->shouldReceive('mergeFakingRules')->once()->with($customRules);
+
+        $this->reflector->shouldReceive('instantiate')->with('FooFaker', $class)->andReturn($mockedFaker);
+
+        $factory->getClassFaker($class, $customRules);
+    }
+
     public function testMakeBlueprintModelClass()
     {
         $this->getFactory();

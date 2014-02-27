@@ -14,14 +14,15 @@ return array(
         'boolean'   => 'boolean',
         'date'      => 'date',
         'time'      => 'unixTime',
-        'datetime'  => "date|Y-m-d H:i:s",
+        'datetime'  => 'date|Y-m-d H:i:s',
+        'text'      => 'text',
     ),
 
     'special_field_rules' => array(
         'username'      => 'username',
         'name'          => 'name', 
-        'first_name'    =>  'firstName',
-        'last_name'     =>  'lastName',
+        'first_name'    => 'firstName',
+        'last_name'     => 'lastName',
         'email'         => 'email', 
         'phone'         => 'phoneNumber',
         'age'           => 'randomNumber|20|90', 
