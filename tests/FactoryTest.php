@@ -54,6 +54,27 @@ class FactoryTest extends TestCase {
         $factory->getClassFaker($class, $customRules);
     }
 
+    public function testFactoryPassesOverriddenRulesToFaker()
+    {
+        $customRules = array('foo' => 'bar');
+        $class = 'DummyFakerClass';
+
+        $factory = $this->getFactory();
+        $this->modelManager->shouldReceive('isModelClass')->andReturn(false);
+
+        $faker = Mockery::mock('Skovachev\Fakefactory\Faker');
+        $faker->shouldReceive('setClassBlueprint')->once();
+        $faker->shouldReceive('fakeAttributes')->andReturn(array());
+        $faker->shouldReceive('fakeRelations')->andReturn(array());
+
+        $factory = Mockery::mock('Skovachev\Fakefactory\Factory[getClassFaker]', array($this->modelManager, $this->reflector));
+        $factory->setBuildOptions(array('override_rules' => $customRules));
+
+        $factory->shouldReceive('getClassFaker')->with($class, $customRules)->andReturn($faker);
+
+        $result = $factory->makeBlueprint($class);
+    }
+
     public function testMakeBlueprintModelClass()
     {
         $this->getFactory();
@@ -85,7 +106,7 @@ class FactoryTest extends TestCase {
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
 
-        $factory->shouldReceive('getClassFaker')->with($class)->once()->andReturn($faker);
+        $factory->shouldReceive('getClassFaker')->with($class, array())->once()->andReturn($faker);
         
         // $factory->model = $this->modelManager;
         $factory->setModelManager($this->modelManager);
@@ -138,7 +159,7 @@ class FactoryTest extends TestCase {
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
 
-        $factory->shouldReceive('getClassFaker')->with($class)->once()->andReturn($faker);
+        $factory->shouldReceive('getClassFaker')->with($class, array())->once()->andReturn($faker);
         
         $factory->setModelManager($this->modelManager);
 
@@ -180,7 +201,7 @@ class FactoryTest extends TestCase {
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
 
-        $factory->shouldReceive('getClassFaker')->with($class)->once()->andReturn($faker);
+        $factory->shouldReceive('getClassFaker')->with($class, array())->once()->andReturn($faker);
         
         $factory->setModelManager($this->modelManager);
 
@@ -221,7 +242,7 @@ class FactoryTest extends TestCase {
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
 
-        $factory->shouldReceive('getClassFaker')->with($class)->once()->andReturn($faker);
+        $factory->shouldReceive('getClassFaker')->with($class, array())->once()->andReturn($faker);
         
         $factory->setModelManager($this->modelManager);
 
@@ -266,7 +287,7 @@ class FactoryTest extends TestCase {
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
 
-        $factory->shouldReceive('getClassFaker')->with($class)->once()->andReturn($faker);
+        $factory->shouldReceive('getClassFaker')->with($class, array())->once()->andReturn($faker);
         
         $factory->setModelManager($this->modelManager);
 
@@ -305,7 +326,7 @@ class FactoryTest extends TestCase {
         $faker->shouldReceive('fakeAttributes')->once()->andReturn($attributes);
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
 
-        $factory->shouldReceive('getClassFaker')->with($class)->once()->andReturn($faker);
+        $factory->shouldReceive('getClassFaker')->with($class, array())->once()->andReturn($faker);
         
         $factory->setModelManager($this->modelManager);
 

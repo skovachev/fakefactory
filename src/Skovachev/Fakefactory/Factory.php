@@ -92,9 +92,9 @@ class Factory
      * @param string $key 
      * @return mixed
      */
-    protected function getBuildOption($key)
+    protected function getBuildOption($key, $default = null)
     {
-        return array_get($this->buildOptions, $key);
+        return array_get($this->buildOptions, $key, $default);
     }
 
     /**
@@ -106,8 +106,9 @@ class Factory
      */
     public function makeBlueprint($class, $asRelationship = false)
     {
-        $overrides = $this->getBuildOption('override_attributes');
-        $excludeAttributes = $this->getBuildOption('exclude_attributes');
+        $overrides = $this->getBuildOption('override_attributes', array());
+        $excludeAttributes = $this->getBuildOption('exclude_attributes', array());
+        $overrideRules = $this->getBuildOption('override_rules', array());
 
         if ($this->getBuildOption('generate_id') === false)
         {
@@ -115,7 +116,7 @@ class Factory
         }
 
         // get faker class
-        $faker = $this->getClassFaker($class);
+        $faker = $this->getClassFaker($class, $overrideRules);
         $blueprint = new Blueprint($class);
 
         // if is model class -> try to extract information from model / database

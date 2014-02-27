@@ -18,7 +18,7 @@ class Query
             'override_attributes' => array(),
             'with' => array(),
             'exclude_attributes' => array(),
-            'rules' => array()
+            'override_rules' => array()
         );
     }
 
@@ -45,9 +45,9 @@ class Query
         return $this->setOption('generate_id', is_null($enabled) ? true : $enabled);
     }
 
-    public function rules($rules = array())
+    public function overrideRules($rules = array())
     {
-        return $this->setOption('rules', $rules);
+        return $this->setOption('override_rules', $rules);
     }
 
     public function overrideAttributes(array $overrides = array())

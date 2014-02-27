@@ -34,7 +34,9 @@ return array(
         'website'       => 'url', 
         'url'           => 'url',
         'ip'            => 'ipv4',
-        'description'   => 'text'
+        'description'   => 'text',
+        'latitude'      => 'randomFloat|6|-90|90',
+        'longitude'     => 'randomFloat|6|-180|180',
     ),
 
 );

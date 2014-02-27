@@ -20,7 +20,7 @@ class QueryTest extends TestCase {
             'override_attributes' => array(),
             'with' => array(),
             'exclude_attributes' => array(),
-            'rules' => array()
+            'override_rules' => array()
         );
 
         $this->assertEquals($buildOptions, $query->getBuildOptions(), 'Default build options have changed');
@@ -55,8 +55,8 @@ class QueryTest extends TestCase {
 
     public function testCustomRulesOption()
     {
-        $this->runOptionTest('rules', array('foo' => 'bar'), function($query){
-            $query->rules(array('foo' => 'bar'));
+        $this->runOptionTest('override_rules', array('foo' => 'bar'), function($query){
+            $query->overrideRules(array('foo' => 'bar'));
         });
     }
 
@@ -72,7 +72,7 @@ class QueryTest extends TestCase {
             'override_attributes' => array('foo' => 'bar', 'bar' => 'baz'),
             'with' => array(),
             'exclude_attributes' => array(),
-            'rules' => array()
+            'override_rules' => array()
         );
 
         $this->factory->shouldReceive('setBuildOptions')->once()->with($buildOptions);
