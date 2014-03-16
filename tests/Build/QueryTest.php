@@ -20,7 +20,8 @@ class QueryTest extends TestCase {
             'override_attributes' => array(),
             'with' => array(),
             'exclude_attributes' => array(),
-            'override_rules' => array()
+            'override_rules' => array(),
+            'skip_related_models' => false
         );
 
         $this->assertEquals($buildOptions, $query->getBuildOptions(), 'Default build options have changed');
@@ -36,6 +37,13 @@ class QueryTest extends TestCase {
     {
         $this->runOptionTest('generate_id', true, function($query){
             $query->generateId();
+        });
+    }
+
+    public function testSkipRelatedModels()
+    {
+        $this->runOptionTest('skip_related_models', true, function($query){
+            $query->skipRelatedModels();
         });
     }
 
@@ -72,7 +80,8 @@ class QueryTest extends TestCase {
             'override_attributes' => array('foo' => 'bar', 'bar' => 'baz'),
             'with' => array(),
             'exclude_attributes' => array(),
-            'override_rules' => array()
+            'override_rules' => array(),
+            'skip_related_models' => false
         );
 
         $this->factory->shouldReceive('setBuildOptions')->once()->with($buildOptions);

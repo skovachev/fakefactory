@@ -109,6 +109,7 @@ class Factory
         $overrides = $this->getBuildOption('override_attributes', array());
         $excludeAttributes = $this->getBuildOption('exclude_attributes', array());
         $overrideRules = $this->getBuildOption('override_rules', array());
+        $skipRelatedModels = $this->getBuildOption('skip_related_models', false);
 
         if ($this->getBuildOption('generate_id') === false)
         {
@@ -139,7 +140,7 @@ class Factory
             {
                 // extract relationships from model / db
                 $mandatoryRelations = array_merge($faker->getMandatoryRelations(), $this->getBuildOption('with'));
-                $relations = $this->model->getRelationsForClass($class, $faker->getRelatedTo(), $mandatoryRelations);
+                $relations = $this->model->getRelationsForClass($class, $faker->getRelatedTo(), $skipRelatedModels ? array() : $mandatoryRelations);
 
                 // add relationship data to faker
                 $blueprint->mergeRelations($relations);

@@ -18,7 +18,8 @@ class Query
             'override_attributes' => array(),
             'with' => array(),
             'exclude_attributes' => array(),
-            'override_rules' => array()
+            'override_rules' => array(),
+            'skip_related_models' => false
         );
     }
 
@@ -43,6 +44,11 @@ class Query
     public function generateId($enabled = null)
     {
         return $this->setOption('generate_id', is_null($enabled) ? true : $enabled);
+    }
+
+    public function skipRelatedModels()
+    {
+        return $this->setOption('skip_related_models', true);
     }
 
     public function overrideRules($rules = array())

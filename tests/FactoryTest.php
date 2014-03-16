@@ -263,6 +263,53 @@ class FactoryTest extends TestCase {
         $this->assertEquals($firstAttr->getValue(), 'overridenValue');
     }
 
+    public function testSkipsDefaultRelationsWhenFlagIsSet()
+    {
+        $this->getFactory();
+
+        $class = 'DummyFakerClass';
+        $attributes = array();
+        $relations = array('foo' => 'fakeRel');
+
+        $relation = new \Skovachev\Fakefactory\Model\Blueprint\Relation('foo', 'BelongsTo', 'FooClass', 'foo_id');
+        $modelRelations = array($relation);
+
+        $buildOptions = array(
+            'generate_id' => false,
+            'override_attributes' => array(),
+            'with' => array('foo'),
+            'exclude_attributes' => array(),
+            'skip_related_models' => true
+        );
+
+        $relatedTo = array('foo');
+
+        $factory = Mockery::mock('Skovachev\Fakefactory\Factory')->makePartial();
+        $factory->setBuildOptions($buildOptions);
+        $faker = Mockery::mock('Skovachev\Fakefactory\Faker');
+        $faker->shouldReceive('setClassBlueprint')->once();
+        $faker->shouldReceive('getMandatoryRelations')->andReturn(array('bar'));
+        $faker->shouldReceive('fakeAttributes')->once()->andReturn($attributes);
+        $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
+        $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
+
+        $factory->shouldReceive('getClassFaker')->with($class, array())->once()->andReturn($faker);
+        
+        $factory->setModelManager($this->modelManager);
+
+        $this->modelManager->shouldReceive('isModelClass')->andReturn(true);
+        $this->modelManager->shouldReceive('getAttributesForClass')->once()->with($class)->andReturn(array());
+        $this->modelManager->shouldReceive('getRelationsForClass')->once()->with($class, $relatedTo, array())->andReturn($modelRelations);
+
+        $blueprint = $factory->makeBlueprint($class);
+
+        $this->assertCount(1, $blueprint->getRelations());
+        $firstRel = $blueprint->getRelations();
+        $firstRel = $firstRel[0];
+        $this->assertEquals($firstRel, $relation);
+        $this->assertEquals($firstRel->getValue(), 'fakeRel');
+    }
+
     public function testLoadsAdditionalRelationsBasedOnWithOption()
     {
         $this->getFactory();
