@@ -55,6 +55,13 @@ class Faker {
     protected $relatedTo = array();
 
     /**
+     * Determines what relations are to be faked by default
+     * 
+     * @var array
+     */
+    protected $with = array();
+
+    /**
      * All faker rules for the current class
      * 
      * @var array
@@ -91,6 +98,15 @@ class Faker {
     public function getRules()
     {
         return $this->rules;
+    }
+
+    /**
+     * Get all mandatory relations that need to be faked
+     * @return array
+     */
+    public function getMandatoryRelations()
+    {
+        return $this->with;
     }
 
     /**

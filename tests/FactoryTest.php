@@ -101,6 +101,7 @@ class FactoryTest extends TestCase {
         $factory = Mockery::mock('Skovachev\Fakefactory\Factory')->makePartial();
         $factory->setBuildOptions($buildOptions);
         $faker = Mockery::mock('Skovachev\Fakefactory\Faker');
+        $faker->shouldReceive('getMandatoryRelations')->andReturn(array());
         $faker->shouldReceive('setClassBlueprint')->once();
         $faker->shouldReceive('fakeAttributes')->once()->andReturn($attributes);
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
@@ -155,6 +156,7 @@ class FactoryTest extends TestCase {
         $factory->setBuildOptions($buildOptions);
         $faker = Mockery::mock('Skovachev\Fakefactory\Faker');
         $faker->shouldReceive('setClassBlueprint')->once();
+        $faker->shouldReceive('getMandatoryRelations')->andReturn(array());
         $faker->shouldReceive('fakeAttributes')->once()->andReturn($attributes);
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
@@ -196,6 +198,7 @@ class FactoryTest extends TestCase {
         $factory = Mockery::mock('Skovachev\Fakefactory\Factory')->makePartial();
         $factory->setBuildOptions($buildOptions);
         $faker = Mockery::mock('Skovachev\Fakefactory\Faker');
+        $faker->shouldReceive('getMandatoryRelations')->andReturn(array());
         $faker->shouldReceive('setClassBlueprint')->once();
         $faker->shouldReceive('fakeAttributes')->once()->andReturn($attributes);
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
@@ -238,6 +241,7 @@ class FactoryTest extends TestCase {
         $factory->setBuildOptions($buildOptions);
         $faker = Mockery::mock('Skovachev\Fakefactory\Faker');
         $faker->shouldReceive('setClassBlueprint')->once();
+        $faker->shouldReceive('getMandatoryRelations')->andReturn(array());
         $faker->shouldReceive('fakeAttributes')->once()->andReturn($attributes);
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
@@ -283,6 +287,7 @@ class FactoryTest extends TestCase {
         $factory->setBuildOptions($buildOptions);
         $faker = Mockery::mock('Skovachev\Fakefactory\Faker');
         $faker->shouldReceive('setClassBlueprint')->once();
+        $faker->shouldReceive('getMandatoryRelations')->andReturn(array('bar'));
         $faker->shouldReceive('fakeAttributes')->once()->andReturn($attributes);
         $faker->shouldReceive('fakeRelations')->once()->andReturn($relations);
         $faker->shouldReceive('getRelatedTo')->once()->andReturn($relatedTo);
@@ -293,7 +298,7 @@ class FactoryTest extends TestCase {
 
         $this->modelManager->shouldReceive('isModelClass')->andReturn(true);
         $this->modelManager->shouldReceive('getAttributesForClass')->once()->with($class)->andReturn(array());
-        $this->modelManager->shouldReceive('getRelationsForClass')->once()->with($class, $relatedTo, array('foo'))->andReturn($modelRelations);
+        $this->modelManager->shouldReceive('getRelationsForClass')->once()->with($class, $relatedTo, array('bar', 'foo'))->andReturn($modelRelations);
 
         $blueprint = $factory->makeBlueprint($class);
 

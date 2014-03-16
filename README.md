@@ -132,6 +132,16 @@ class UserFaker extends \Skovachev\Fakefactory\Faker
 
 The above code will tell the Fakefactory class that when generating a `User` model it needs to set the `type` attribute to either *admin* or *client*. Additionally it tells it that there is relation present that does not include a foreign key on the model's table. In this case the foreign key would be on the *posts* table - for instance *user_id*.
 
+### Faking related classes by default
+You can indicate that some relations in your model should be faked by default, without you having to specify the `with` rule when creating a faked object:
+
+```php
+class UserFaker extends \Skovachev\Factory\Faker
+{
+    protected $with = ['account'];
+}
+```
+
 ### Assigning fakers to classes
 Simply creating the class, however, will not be enough. You'll need to tell the Fakefactory to use this Faker class when it needs to generate `User` models. The following code registers the Faker object with the Fakefactory:
 

@@ -138,7 +138,8 @@ class Factory
             if (!$asRelationship)
             {
                 // extract relationships from model / db
-                $relations = $this->model->getRelationsForClass($class, $faker->getRelatedTo(), $this->getBuildOption('with'));
+                $mandatoryRelations = array_merge($faker->getMandatoryRelations(), $this->getBuildOption('with'));
+                $relations = $this->model->getRelationsForClass($class, $faker->getRelatedTo(), $mandatoryRelations);
 
                 // add relationship data to faker
                 $blueprint->mergeRelations($relations);
