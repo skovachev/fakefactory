@@ -61,11 +61,11 @@ class RelationTest extends TestCase {
 
     public function testSetsForeignKeyOnToManyRelations()
     {
-        $value = new \Illuminate\Support\Collection([
-            ['name' => 'relatedItemName']
-        ]);
+        $value = new \Illuminate\Support\Collection(array(
+            array('name' => 'relatedItemName')
+        ));
         $relation = new Relation('relationshipName', 'HasMany', 'DummyClass', 'has_many_parent_key', $value);
-        $model = ['id'=> 'foo'];
+        $model = array('id'=> 'foo');
 
         $relation->applyToModelAndContainedValue($model);
 

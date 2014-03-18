@@ -230,7 +230,7 @@ class ModelManagerTest extends TestCase {
 
         $relatedModel = Mockery::mock();
         $relatedModel->shouldReceive('save')->once();
-        $postRelModel = new \Illuminate\Support\Collection([$relatedModel]);
+        $postRelModel = new \Illuminate\Support\Collection(array($relatedModel));
         $model->postRel = $postRelModel;
 
         $postRelation = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Relation');
