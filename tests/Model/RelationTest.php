@@ -1,8 +1,8 @@
 <?php namespace Skovachev\Fakefactory\Model\Blueprint;
 
-function is_associative_array()
+function is_associative_array($model)
 {
-    return true;
+    return !$model instanceof \Skovachev\Fakefactory\Model\Blueprint\Relation;
 }
 
 use TestCase;
@@ -57,6 +57,22 @@ class RelationTest extends TestCase {
 
         $this->assertEquals($model, array('bar_id' => 'baz'));
         $this->assertEquals($relationModelRelation->getValue(), array('id' => 'baz'));
+    }
+
+    public function testSetsForeignKeyOnToManyRelations()
+    {
+        $value = new \Illuminate\Support\Collection([
+            ['name' => 'relatedItemName']
+        ]);
+        $relation = new Relation('relationshipName', 'HasMany', 'DummyClass', 'has_many_parent_key', $value);
+        $model = ['id'=> 'foo'];
+
+        $relation->applyToModelAndContainedValue($model);
+
+        $relationValue = $relation->getValue();
+        $firstRelatedItem = $relationValue->first();
+        $this->assertArrayHasKey('has_many_parent_key', $firstRelatedItem);
+        $this->assertEquals($firstRelatedItem['has_many_parent_key'], 'foo');
     }
     
 }

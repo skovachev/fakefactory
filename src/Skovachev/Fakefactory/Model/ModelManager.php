@@ -203,10 +203,20 @@ class ModelManager
         foreach ($afterSaveRelations as $relation) {
             $key = $relation->getName();
             $relationship = $model->$key;
+
             // set foreign keys after model saved
             $relation->applyTo($relationship, $model);
-            
-            $relationship->save();
+
+            if ($relationship instanceof \Illuminate\Support\Collection)
+            {
+                foreach ($relationship as $item) {
+                    $item->save();
+                }
+            }
+            else
+            {
+                $relationship->save();
+            }
         }
 
         if (! empty($relationshipKeys))

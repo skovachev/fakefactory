@@ -45,17 +45,17 @@ class Relation extends Item
     {
         $foreignKey = $this->getForeignKey();
 
-        if ($this->type == 'HasOne' || $this->type == 'HasMany')
+        if ($this->getType() == 'HasOne' || $this->getType() == 'HasMany')
         {
             $this->setAttribute($relatedModelAttributes, $foreignKey, $this->getAttribute($modelAttributes, 'id'));
         }
-        else if ($this->type == 'BelongsTo' || $this->type == 'BelongsToMany')
+        else if ($this->getType() == 'BelongsTo' || $this->getType() == 'BelongsToMany')
         {
             $this->setAttribute($modelAttributes, $foreignKey, $this->getAttribute($relatedModelAttributes, 'id'));
         }
         else
         {
-            throw new UnsupportedFeatureException("Fakefactory does not support relations of type '" . $this->type . "'");
+            throw new UnsupportedFeatureException("Fakefactory does not support relations of type '" . $this->getType() . "'");
         }
     }
 
@@ -64,26 +64,42 @@ class Relation extends Item
         return $this->applyTo($this, $model);
     }
 
-    protected function setAttribute(&$model, $key, $value)
+    protected function setAttribute(&$model, $key, $value, $isCollection = true)
     {
-        if (is_associative_array($model))
+        // check if relation is a to many
+        $isCollection = $isCollection && ($model instanceof \Illuminate\Support\Collection);
+        if ($isCollection)
         {
-            $model[$key] = $value;
-        }
-        else if ($model instanceof Relation)
-        {
-            $relationValue = $model->getValue();
-            $this->setAttribute($relationValue, $key, $value);
-            $model->setValue($relationValue);
-        }
-        // if toMany relation -> go into the array and set value
-        else if (is_array($model) && !is_associative_array($model))
-        {
-            return $this->setAttribute($model[0], $key, $value);
+            // need to convert \Illuminate\Support\Collection to array since pass be reference doesn't work on it
+            $modelClass = get_class($model);
+            $model = $model->toArray();
+            foreach ($model as &$modelItem) {
+                $this->setAttribute($modelItem, $key, $value);
+            }
+            $model = new $modelClass($model);
         }
         else
         {
-            $model->$key = $value;
+            if (is_associative_array($model))
+            {
+                $model[$key] = $value;
+            }
+            else if ($model instanceof Relation)
+            {
+                $relationValue = $model->getValue();
+                $this->setAttribute($relationValue, $key, $value, $model->isToManyRelation());
+
+                $model->setValue($relationValue);
+            }
+            // if toMany relation -> go into the array and set value
+            else if (is_array($model) && !is_associative_array($model))
+            {
+                return $this->setAttribute($model[0], $key, $value);
+            }
+            else
+            {
+                $model->$key = $value;
+            }
         }
     }
 

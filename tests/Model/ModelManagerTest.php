@@ -221,5 +221,29 @@ class ModelManagerTest extends TestCase {
         $this->assertEquals($attributes[0]->getName(), 'foo');
         $this->assertEquals($attributes[0]->getType(), 'bar');
     }
+
+    public function testCanSaveRelatedCollectionOfItems()
+    {
+        $model = Mockery::mock();
+        $model->shouldReceive('save')->once();
+        $model->shouldReceive('load')->once()->with('postRel');
+
+        $relatedModel = Mockery::mock();
+        $relatedModel->shouldReceive('save')->once();
+        $postRelModel = new \Illuminate\Support\Collection([$relatedModel]);
+        $model->postRel = $postRelModel;
+
+        $postRelation = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Relation');
+        $postRelation->shouldReceive('savedBeforeModel')->andReturn(false);
+        $postRelation->shouldReceive('getName')->andReturn('postRel');
+        $postRelation->shouldReceive('applyTo')->with($postRelModel, $model)->once();
+
+        $blueprint = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Blueprint');
+        $blueprint->shouldReceive('getRelations')->andReturn(array($postRelation));
+
+        $manager = $this->getManager();
+
+        $model = $manager->saveModel($model, $blueprint);
+    }
     
 }
