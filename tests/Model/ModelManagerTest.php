@@ -228,7 +228,7 @@ class ModelManagerTest extends TestCase {
         $model->shouldReceive('save')->once();
         $model->shouldReceive('load')->once()->with('postRel');
 
-        $relatedModel = Mockery::mock();
+        $relatedModel = Mockery::mock('stdClass');
         $relatedModel->shouldReceive('save')->once();
         $postRelModel = new \Illuminate\Support\Collection(array($relatedModel));
         $model->postRel = $postRelModel;
@@ -236,6 +236,31 @@ class ModelManagerTest extends TestCase {
         $postRelation = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Relation');
         $postRelation->shouldReceive('savedBeforeModel')->andReturn(false);
         $postRelation->shouldReceive('getName')->andReturn('postRel');
+        $postRelation->shouldReceive('getRelatedClassName')->andReturn('stdClass');
+        $postRelation->shouldReceive('applyTo')->with($postRelModel, $model)->once();
+
+        $blueprint = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Blueprint');
+        $blueprint->shouldReceive('getRelations')->andReturn(array($postRelation));
+
+        $manager = $this->getManager();
+
+        $model = $manager->saveModel($model, $blueprint);
+    }
+
+    public function testCanSaveRelatedCollectionOfArrayItems()
+    {
+        $model = Mockery::mock();
+        $model->shouldReceive('save')->once();
+        $model->shouldReceive('load')->once()->with('postRel');
+
+        $relatedModel = array('foo' => 'bar');
+        $postRelModel = new \Illuminate\Support\Collection(array($relatedModel));
+        $model->postRel = $postRelModel;
+
+        $postRelation = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Relation');
+        $postRelation->shouldReceive('savedBeforeModel')->andReturn(false);
+        $postRelation->shouldReceive('getName')->andReturn('postRel');
+        $postRelation->shouldReceive('getRelatedClassName')->andReturn('DummyModelClass');
         $postRelation->shouldReceive('applyTo')->with($postRelModel, $model)->once();
 
         $blueprint = Mockery::mock('Skovachev\Fakefactory\Model\Blueprint\Blueprint');

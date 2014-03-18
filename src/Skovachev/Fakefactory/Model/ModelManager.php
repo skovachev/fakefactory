@@ -210,7 +210,16 @@ class ModelManager
             if ($relationship instanceof \Illuminate\Support\Collection)
             {
                 foreach ($relationship as $item) {
-                    $item->save();
+                    if (is_subclass_of($item, $relation->getRelatedClassName()))
+                    {
+                        $item->save();
+                    }
+                    else
+                    {
+                        $relatedClassName = $relation->getRelatedClassName();
+                        $item = new $relatedClassName($item);
+                        $item->save();
+                    }
                 }
             }
             else
