@@ -37,6 +37,7 @@ return array(
         'description'   => 'text',
         'latitude'      => 'randomFloat|6|-90|90',
         'longitude'     => 'randomFloat|6|-180|180',
+        'uuid'          => 'uuid',
     ),
 
 );
