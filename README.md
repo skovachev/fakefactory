@@ -91,7 +91,7 @@ In some cases you may want to generate a model along with a related model and in
 $user = Fakefactory::with('posts')->make('User');
 ```
 
-In the above example the factory will generate a `Post` model and attach ot to the `User` model based on their relation type.
+In the above example the factory will generate a `Post` model and attach it to the `User` model based on their relation type.
 You can also override attributes of the related model by nesting the like in the following example:
 
 ```php
